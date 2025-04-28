@@ -1,0 +1,152 @@
+#include<iostream>
+using namespace std;
+
+int key[10], chain[10], n;
+
+class SR {
+    int rno;
+    string name;
+    double m10, m12;
+
+public:
+    void table();
+    void accept();
+    void search();
+    void modify();
+    void Delete();
+    void display();
+} h[10];
+
+// Creating the table
+void SR::table() {
+    cout << "Enter total number of keys: ";
+    cin >> n;
+    cout << "Enter keys:\n";
+    for (int i = 0; i < n; i++) {
+        cout << "key[" << i + 1 << "] = ";
+        cin >> key[i];
+    }
+    for (int i = 0; i < 10; i++) {
+        h[i].rno = -1;
+        chain[i] = -2;
+        h[i].name = "NULL";
+        h[i].m10 = 0.0;
+        h[i].m12 = 0.0;
+    }
+}
+
+// Accept student records and insert using hashing
+void SR::accept() {
+    int loc;
+    for (int i = 0; i < n; i++) {
+        loc = key[i] % 10;
+        for (int j = loc, count = 0; count < 10; j = (j + 1) % 10, count++) {
+            if (h[j].rno == -1) {
+                h[j].rno = key[i];
+                cout << "Enter the student details for Roll No " << key[i] << ":\n";
+                cout << "Enter name: ";
+                cin >> h[j].name;
+                cout << "Enter 10th marks: ";
+                cin >> h[j].m10;
+                cout << "Enter 12th marks: ";
+                cin >> h[j].m12;
+                break;
+            }
+        }
+    }
+}
+
+// Display the records
+void SR::display() {
+    cout << "Loc\tRollNo\tName\t10th Marks\t12th Marks\n";
+    for (int i = 0; i < 10; i++) {
+        cout << i << "\t" << h[i].rno << "\t" << h[i].name << "\t" << h[i].m10 << "\t" << h[i].m12 << endl;
+    }
+}
+
+// Search for a record
+void SR::search() {
+    int s;
+    cout << "Enter the roll no to search: ";
+    cin >> s;
+    int pos = s % 10;
+    for (int i = pos, count = 0; count < 10; i = (i + 1) % 10, count++) {
+        if (h[i].rno == s) {
+            cout << "Record found:\n";
+            cout << "Loc\tRollNo\tName\t10th Marks\t12th Marks\n";
+            cout << i << "\t" << h[i].rno << "\t" << h[i].name << "\t" << h[i].m10 << "\t" << h[i].m12 << endl;
+            return;
+        }
+    }
+    cout << "Record not found.\n";
+}
+
+// Modify a record
+void SR::modify() {
+    int s;
+    cout << "Enter the roll no to modify: ";
+    cin >> s;
+    int pos = s % 10;
+    for (int i = pos, count = 0; count < 10; i = (i + 1) % 10, count++) {
+        if (h[i].rno == s) {
+            cout << "Current Record:\n";
+            cout << "Loc\tRollNo\tName\t10th Marks\t12th Marks\n";
+            cout << i << "\t" << h[i].rno << "\t" << h[i].name << "\t" << h[i].m10 << "\t" << h[i].m12 << endl;
+
+            cout << "\nEnter new details:\n";
+            cout << "Name: ";
+            cin >> h[i].name;
+            cout << "10th Marks: ";
+            cin >> h[i].m10;
+            cout << "12th Marks: ";
+            cin >> h[i].m12;
+            return;
+        }
+    }
+    cout << "Record not found.\n";
+}
+
+// Delete a record
+void SR::Delete() {
+    int s;
+    cout << "Enter the roll no to delete: ";
+    cin >> s;
+    int pos = s % 10;
+    for (int i = pos, count = 0; count < 10; i = (i + 1) % 10, count++) {
+        if (h[i].rno == s) {
+            cout << "Record found and deleted:\n";
+            cout << "Loc\tRollNo\tName\t10th Marks\t12th Marks\n";
+            cout << i << "\t" << h[i].rno << "\t" << h[i].name << "\t" << h[i].m10 << "\t" << h[i].m12 << endl;
+
+            h[i].rno = -1;
+            h[i].name = "NULL";
+            h[i].m10 = 0.0;
+            h[i].m12 = 0.0;
+            return;
+        }
+    }
+    cout << "Record not found.\n";
+}
+
+// Main menu
+int main() {
+    int ch;
+    SR t;
+    do {
+        cout << "\nMain Menu\n";
+        cout << "1. Accept\n2. Display\n3. Search\n4. Modify\n5. Delete\n0. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> ch;
+        switch (ch) {
+            case 1: t.table(); t.accept(); break;
+            case 2: t.display(); break;
+            case 3: t.search(); break;
+            case 4: t.modify(); break;
+            case 5: t.Delete(); break;
+            case 0: cout << "Exiting program.\n"; break;
+            default: cout << "Invalid choice.\n";
+        }
+    } while (ch != 0);
+
+    return 0;
+}
